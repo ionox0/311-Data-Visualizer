@@ -1,0 +1,14 @@
+div.complaints-container
+
+
+  | Choose Date Range: &nbsp;
+  input#start-date
+  input#end-date
+  button#submit
+    | Map
+
+
+  // The Map
+  map(complaints-data='ctrl.complaintsData')
+
+  | {{ ctrl.complaintsData }}
