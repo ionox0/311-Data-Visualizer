@@ -3,8 +3,11 @@
 
   var ComplaintsService = function($q, $http, ComplaintModel){
 
-    function getComplaints(startDate, endDate){
-      deferred = $q.defer();
+
+
+
+    function getComplaints(startDate, endDate, complaint_type){
+      var deferred = $q.defer();
 
       var req = {
         url: '/complaints',
@@ -14,10 +17,12 @@
         }
       };
 
+      if (complaint_type) req.params.complaint_type = complaint_type.complaint_type; // todo...
+
       $http(req)
         .then(function(resp){
 
-          complaintsDat = resp.data.rows;
+          var complaintsDat = resp.data.rows;
 
           var complaints = [];
           for (var i = 1; i < complaintsDat.length; i++) {
@@ -31,8 +36,32 @@
     }
 
 
+
+    function getComplaintTypes(){
+
+      var deferred = $q.defer();
+
+      var req = {
+        url: '/complaint_types'
+      };
+
+      $http(req)
+        .then(function(resp){
+
+          var dat = resp.data.rows;
+          deferred.resolve(dat);
+
+        });
+
+      return deferred.promise;
+
+    }
+
+
+
     return {
-      getComplaints: getComplaints
+      getComplaints: getComplaints,
+      getComplaintTypes: getComplaintTypes
     }
 
 

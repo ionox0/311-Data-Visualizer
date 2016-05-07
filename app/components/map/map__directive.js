@@ -10,6 +10,8 @@ angular.module('App.Directives', [])
 
       link: function($scope, $elem, ctrl){
 
+        var infowindow = new google.maps.InfoWindow();
+
         var map;
         var initialLocation = new google.maps.LatLng(47.6101, -122.3420);;
 
@@ -37,13 +39,9 @@ angular.module('App.Directives', [])
 
         }, function(){
 
-
-
           for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
           }
-
-
 
 
           function addComplaintMarker(complaint) {
@@ -52,7 +50,14 @@ angular.module('App.Directives', [])
             var marker = new google.maps.Marker({
               position: myLatlng,
               map: map,
-              title: 'Click to zoom'
+              title: 'Click to zoom',
+              data: complaint
+            });
+
+            // Add the popup window
+            google.maps.event.addListener(marker,'click', function(){
+              infowindow.setContent(complaint.getDisplayText());
+              infowindow.open(map, marker);
             });
 
             markers.push(marker);
@@ -69,14 +74,7 @@ angular.module('App.Directives', [])
           }
 
 
-
-
-
-
-
-
         });
-
 
 
       },

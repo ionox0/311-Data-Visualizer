@@ -6,31 +6,35 @@
 
     function _init(){
 
-      complaintsService.getComplaints()
+
+      complaintsService.getComplaintTypes()
+        .then(function(types){
+
+          ctrl.complaint_types = types;
+
+        });
+
+
+      complaintsService.getComplaints('2015-01-01', '2015-01-31')
         .then(function(complaints){
           ctrl.complaintsData = complaints;
         });
 
 
-
       $('#submit').on('click', function(){
 
-        var startDate = $('#start-date').val();
-        var endDate = $('#end-date').val();
+        var startDate = ctrl.start_date;
+        var endDate = ctrl.end_date;
+        var complaint_type = ctrl.complaint_type;
 
-        console.log(startDate, endDate);
-
-        complaintsService.getComplaints(startDate, endDate)
+        complaintsService.getComplaints(startDate, endDate, complaint_type)
           .then(function(complaints){
 
-            console.log('returned complaints: ', complaints);
             ctrl.complaintsData = complaints;
 
           });
 
       });
-
-
 
     }
 

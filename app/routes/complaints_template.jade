@@ -1,14 +1,22 @@
 div.complaints-container
 
+  div.date-range-inputs
+    | Choose Date Range: &nbsp;
+    input#start-date(ng-model='ctrl.start_date')
+    input#end-date(ng-model='ctrl.end_date')
+    | &nbsp; (limit 500) &nbsp;
+    button#submit
+      | Map
 
-  | Choose Date Range: &nbsp;
-  input#start-date
-  input#end-date
-  button#submit
-    | Map
 
+  div.complaint-type-selector
+    | Complaint Type: &nbsp;
+    select(
+      ng-model='ctrl.complaint_type'
+      ng-options='complaint.complaint_type for complaint in ctrl.complaint_types'
+    )
+
+  br
 
   // The Map
   map(complaints-data='ctrl.complaintsData')
-
-  | {{ ctrl.complaintsData }}

@@ -4,40 +4,61 @@
 
       var Complaint = (function(){
 
-        this.id = 1;
-
         return function(data){
 
-          // Todo - get data parsing right:
+          this.id = data['id'];
+          this.created_date = moment(data['created_date']);
+          this.closed_date = moment(data['closed_date']);
+          this.response_time = moment.duration(this.closed_date.diff(this.created_date)).asHours();
+          this.response_time = Math.round(this.response_time * 100) / 100; // (two decimal places)
 
-          this.unique_key = data['Unique.Key'];
-          this.created_date = data['Unique.Key'];
-          this.closed_date = data['Closed.Date'];
-          this.agency = data['Agency'];
-          this.agency_name = data['Agency.Name'];
-          this.complaint_type = data['Complaint.Type'];
-          this.descriptor = data['Descriptor'];
-          this.status = data['Status'];
-          this.due_date = data['Due.Date'];
-          this.resolution_description = data['Resolution.Description'];
+          this.agency = data['agency'];
+          this.agency_name = data['agency_name'];
+          this.complaint_type = data['complaint_type'];
+          this.descriptor = data['descriptor'];
+          this.status = data['status'];
+          this.due_date = data['due_date'];
+          this.resolution_description = data['resolution_description'];
 
-          this.address_type = data['Address.Type'];
-          this.city = data['City'];
-          this.landmark = data['Landmark'];
-          this.facility_type = data['Facility.Type'];
+          this.address_type = data['address_type'];
+          this.city = data['city'];
+          this.landmark = data['landmark'];
+          this.facility_type = data['facility_type'];
 
           // Location
-          this.borough = data['Borough'];
-          this.x_coord = data['X.Coordinate..State.plane'];
-          this.y_coord = data['Y.Coordinate..State.plane'];
+          this.borough = data['borough'];
+          this.x_coord = data['x_coord_state_plane'];
+          this.y_coord = data['y_coord_state_plane'];
           this.lat = data['latitude'];
           this.lon = data['longitude'];
 
 
-          this.location_type = data['Location.Type'];
-          this.incident_zip = data['Incident.Zip'];
-          this.incident_address = data['Incident.Address'];
-          this.street_name = data['Street.Name'];
+          this.location_type = data['location_type'];
+          this.incident_zip = data['incident_zip'];
+          this.incident_address = data['incident_address'];
+          this.street_name = data['street_name'];
+
+
+
+          this.getDisplayText = function(){
+            var str = '';
+            str += formatHtml('Date Created: ', this.created_date.format('MMMM Do YYYY, h:mm:ss a'));
+            str += formatHtml('Date Closed: ', this.closed_date.format('MMMM Do YYYY, h:mm:ss a'));
+
+            str += formatHtml('Response Time: ', this.response_time + ' hours');
+
+            str += formatHtml('Reporting Agency: ', this.agency);
+            str += formatHtml('Complaint Type: ', this.complaint_type);
+            str += formatHtml('Address: ', this.incident_address);
+
+            str += formatHtml('Description: ', this.descriptor);
+
+            return str;
+          };
+
+          function formatHtml(title, str){
+            return '<h3>' + title + '&nbsp;' + str + '</h3>';
+          }
 
         }
 

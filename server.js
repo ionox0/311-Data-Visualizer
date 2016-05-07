@@ -8,6 +8,7 @@ console.log(__dirname);
 app.use(express.static(__dirname + '/build'));
 
 app.get('/complaints', complaintRouter.get_complaints);
+app.get('/complaint_types', complaintRouter.get_complaint_types);
 
 app.listen(port, function() {
   console.log('Listening on:', port, '\n');
@@ -16,3 +17,6 @@ app.listen(port, function() {
 process.on('uncaughtException', function (err) {
   console.log(err);
 });
+
+
+

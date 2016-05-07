@@ -5,19 +5,21 @@ client.connect();
 
 exports.get_complaints = function(req, res){
 
-  var start = req.query.start + '';
+  var start = req.query.start;
   var end = req.query.end;
+  var complaint_type = req.query.complaint_type;
 
-  startd = new Date(Date.parse(start)).getTime();
-  endd = new Date(Date.parse(end)).getTime();
-
-
-  console.log(start, end);
-  var sql = "SELECT * FROM complaints WHERE created_date > '" + start + "' AND created_date < '" + end + "' LIMIT 100";
+  var sql;
+  if (complaint_type){
+    sql = "SELECT * FROM complaints WHERE created_date > '" + start + "' AND created_date < '" + end + "' AND complaint_type = " + "'" + complaint_type + "'";
+  } else {
+    sql = "SELECT * FROM complaints WHERE created_date > '" + start + "' AND created_date < '" + end + "'";
+  }
+  sql += " LIMIT 500";
 
   console.log(sql);
 
-  client.query(sql, function(err, probes) {
+  client.query(sql, function(err, rows) {
 
     //call `done()` to release the client back to the pool
     //done(); --not defined...
@@ -25,6 +27,26 @@ exports.get_complaints = function(req, res){
       return console.error('error running query', err);
     }
 
-    res.send(probes);
+    res.send(rows);
+  })
+};
+
+
+
+exports.get_complaint_types = function(req, res){
+
+  var sql = "SELECT DISTINCT complaint_type FROM complaints";
+
+  console.log(sql);
+
+  client.query(sql, function(err, rows) {
+
+    //call `done()` to release the client back to the pool
+    //done(); --not defined...
+    if(err) {
+      return console.error('error running query', err);
+    }
+
+    res.send(rows);
   })
 };
