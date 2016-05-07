@@ -4,6 +4,10 @@
 
       var Complaint = (function(){
 
+        function formatHtml(title, str){
+          return '<h3 style="display:inline;">' + title + '&nbsp; </h3>' + str + '</br>';
+        }
+
         return function(data){
 
           this.id = data['id'];
@@ -40,25 +44,18 @@
 
 
 
-          this.getDisplayText = function(){
+          this.getDisplayHtml = function(){
             var str = '';
             str += formatHtml('Date Created: ', this.created_date.format('MMMM Do YYYY, h:mm:ss a'));
             str += formatHtml('Date Closed: ', this.closed_date.format('MMMM Do YYYY, h:mm:ss a'));
-
             str += formatHtml('Response Time: ', this.response_time + ' hours');
-
             str += formatHtml('Reporting Agency: ', this.agency);
             str += formatHtml('Complaint Type: ', this.complaint_type);
             str += formatHtml('Address: ', this.incident_address);
-
             str += formatHtml('Description: ', this.descriptor);
-
+            str += formatHtml('Resolution: ', this.resolution_description);
             return str;
           };
-
-          function formatHtml(title, str){
-            return '<h3>' + title + '&nbsp;' + str + '</h3>';
-          }
 
         }
 

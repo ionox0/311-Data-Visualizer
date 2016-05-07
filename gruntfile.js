@@ -82,7 +82,21 @@ module.exports = function(grunt) {
           ]
         }
       }
-    }
+    },
+
+    copy: {
+      all: {
+        files: [
+          {
+            expand: true,
+            src: ['assets/**/*'],
+            dest: 'build/assets',
+            filter: 'isFile',
+            flatten: true
+          }
+        ]
+      }
+    },
 
 
   });
@@ -93,9 +107,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
 
 
-  grunt.registerTask('build', ['stylus', 'jade:compile', 'uglify', 'watch']);
+  grunt.registerTask('build', ['stylus', 'jade:compile', 'uglify', 'copy', 'watch']);
 
 };
