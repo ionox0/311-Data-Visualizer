@@ -10,10 +10,14 @@ angular.module('App.Directives', [])
 
       link: function($scope, $elem, ctrl){
 
-        var infowindow = new google.maps.InfoWindow();
+        var initialLocation = new google.maps.LatLng(47.6101, -122.3420);
+        var mapOptions = {
+          zoom: 15,
+          center: initialLocation
+        };
 
-        var map;
-        var initialLocation = new google.maps.LatLng(47.6101, -122.3420);;
+        var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        var infowindow = new google.maps.InfoWindow();
 
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function (position) {
@@ -22,65 +26,49 @@ angular.module('App.Directives', [])
           });
         }
 
-        var mapOptions = {
-          zoom: 15,
-          center: initialLocation
-        };
-
-
         var markers = [];
 
-        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-
-        $scope.$watch( function(){
-
+        $scope.$watch(function(){
           return $scope.complaintsData;
-
         }, function(){
-
           for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
           }
 
-
-          function addComplaintMarker(complaint) {
-            var myLatlng = new google.maps.LatLng(complaint.lat, complaint.lon);
-
-            var marker = new google.maps.Marker({
-              position: myLatlng,
-              map: map,
-              title: 'Click to zoom',
-              data: complaint
-            });
-
-            // Add the popup window
-            google.maps.event.addListener(marker,'click', function(){
-              infowindow.setContent(complaint.getDisplayText());
-              infowindow.open(map, marker);
-            });
-
-            markers.push(marker);
-
-          }
-
           if ($scope.complaintsData){
-
             for (var i = 0; i < $scope.complaintsData.length; i++){
               addComplaintMarker($scope.complaintsData[i]);
             }
-
-
           }
-
-
         });
 
 
-      },
 
+        function addComplaintMarker(complaint) {
+          var myLatlng = new google.maps.LatLng(complaint.lat, complaint.lon);
+
+          var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Click to zoom',
+            data: complaint
+          });
+
+          // Add the popup window
+          google.maps.event.addListener(marker,'click', function(){
+            infowindow.setContent(complaint.getDisplayHtml());
+            infowindow.open(map, marker);
+          });
+
+          markers.push(marker);
+        }
+
+
+      },
       templateUrl: '/templates/map.html'
+
     }
+
 
   }]);
 

@@ -5,22 +5,19 @@
     var ctrl = this;
 
     function _init(){
-
-
+      // Fetch complaint types list
       complaintsService.getComplaintTypes()
         .then(function(types){
-
           ctrl.complaint_types = types;
-
         });
 
-
+      // Show some initial data
       complaintsService.getComplaints('2015-01-01', '2015-01-31')
         .then(function(complaints){
           ctrl.complaintsData = complaints;
         });
 
-
+      // Listen for button press
       $('#submit').on('click', function(){
 
         var startDate = ctrl.start_date;
@@ -29,9 +26,7 @@
 
         complaintsService.getComplaints(startDate, endDate, complaint_type)
           .then(function(complaints){
-
             ctrl.complaintsData = complaints;
-
           });
 
       });

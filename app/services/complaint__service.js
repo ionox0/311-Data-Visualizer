@@ -1,10 +1,6 @@
 (function(){
 
-
   var ComplaintsService = function($q, $http, ComplaintModel){
-
-
-
 
     function getComplaints(startDate, endDate, complaint_type){
       var deferred = $q.defer();
@@ -21,14 +17,11 @@
 
       $http(req)
         .then(function(resp){
-
           var complaintsDat = resp.data.rows;
-
           var complaints = [];
           for (var i = 1; i < complaintsDat.length; i++) {
             complaints.push(new ComplaintModel(complaintsDat[i]));
           }
-
           deferred.resolve(complaints);
         });
 
@@ -36,9 +29,7 @@
     }
 
 
-
     function getComplaintTypes(){
-
       var deferred = $q.defer();
 
       var req = {
@@ -47,26 +38,20 @@
 
       $http(req)
         .then(function(resp){
-
           var dat = resp.data.rows;
           deferred.resolve(dat);
-
         });
 
       return deferred.promise;
 
     }
 
-
-
     return {
       getComplaints: getComplaints,
       getComplaintTypes: getComplaintTypes
     }
 
-
   };
-
 
 
   angular.module('App')
@@ -76,6 +61,5 @@
       'ComplaintModel',
       ComplaintsService
   ]);
-
 
 })();

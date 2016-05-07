@@ -4,7 +4,6 @@ var client = new pg.Client(conString);
 client.connect();
 
 exports.get_complaints = function(req, res){
-
   var start = req.query.start;
   var end = req.query.end;
   var complaint_type = req.query.complaint_type;
@@ -16,7 +15,6 @@ exports.get_complaints = function(req, res){
     sql = "SELECT * FROM complaints WHERE created_date > '" + start + "' AND created_date < '" + end + "'";
   }
   sql += " LIMIT 500";
-
   console.log(sql);
 
   client.query(sql, function(err, rows) {
@@ -34,9 +32,7 @@ exports.get_complaints = function(req, res){
 
 
 exports.get_complaint_types = function(req, res){
-
   var sql = "SELECT DISTINCT complaint_type FROM complaints";
-
   console.log(sql);
 
   client.query(sql, function(err, rows) {
