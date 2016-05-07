@@ -19,6 +19,7 @@
 
       // Listen for button press
       $('#submit').on('click', function(){
+        ctrl.loading = true;
 
         var startDate = ctrl.start_date;
         var endDate = ctrl.end_date;
@@ -27,6 +28,10 @@
         complaintsService.getComplaints(startDate, endDate, complaint_type)
           .then(function(complaints){
             ctrl.complaintsData = complaints;
+            ctrl.loading = false;
+          },function(err){
+            console.log(err);
+            ctrl.loading = false;
           });
 
       });

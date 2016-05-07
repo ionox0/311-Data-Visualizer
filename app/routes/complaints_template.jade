@@ -20,7 +20,11 @@ div.complaints-container
     )
 
     button#submit
-      | Map
+      | Map &nbsp;
+      img.loading-icon(
+        src='assets/loading.gif'
+        ng-show='ctrl.loading'
+      )
 
   br
 
