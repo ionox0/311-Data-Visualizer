@@ -10,7 +10,7 @@ angular.module('App.Directives', [])
 
       link: function($scope, $elem, ctrl){
 
-        var initialLocation = new google.maps.LatLng(47.6101, -122.3420);
+        var initialLocation = new google.maps.LatLng(40.7128, 74.0059);
         var mapOptions = {
           zoom: 15,
           center: initialLocation
